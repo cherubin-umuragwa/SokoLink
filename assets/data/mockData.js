@@ -57,6 +57,7 @@ export const mockData = {
             budget: 15000,
             currency: "KES",
             location: "Nairobi, Kenya",
+            phone: "254711111111",
             urgency: "High",
             date: new Date(Date.now() - 3600000).toISOString()
         },
@@ -67,6 +68,7 @@ export const mockData = {
             budget: 0,
             currency: "TZS",
             location: "Dar es Salaam, Tanzania",
+            phone: "255722222222",
             urgency: "Normal",
             date: new Date(Date.now() - 7200000).toISOString()
         }

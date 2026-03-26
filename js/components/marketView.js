@@ -79,26 +79,33 @@ export const marketView = {
 
         return `
             <div class="matches-grid">
-                ${requests.map(item => `
-                    <div class="match-card" style="border-top-color: var(--orange);">
-                        <div class="match-header">
-                            <span class="relevance-badge" style="background-color: var(--orange); color: white;">Buyer</span>
-                            <span class="text-muted text-sm">${formatter.formatDate(item.date)}</span>
-                        </div>
-                        <div class="match-body">
-                            <h4 class="text-lg font-bold">${item.productNeeded}</h4>
-                            <p class="text-sm text-muted mb-2">📍 ${item.location}</p>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-bold text-orange-600">${item.quantity} units needed</span>
-                                <span class="text-sm">Urgency: ${item.urgency}</span>
+                ${requests.map(item => {
+                    const whatsappMsg = `Hi, I saw your request for ${item.productNeeded} on SokoLink. I can supply this to you.`;
+                    const whatsappLink = formatter.generateWhatsAppLink(item.phone || '254700000000', whatsappMsg);
+                    
+                    return `
+                        <div class="match-card" style="border-top-color: var(--orange);">
+                            <div class="match-header">
+                                <span class="relevance-badge" style="background-color: var(--orange); color: white;">Buyer</span>
+                                <span class="text-muted text-sm">${formatter.formatDate(item.date)}</span>
                             </div>
-                            <p class="text-sm">Budget: ${item.budget > 0 ? formatter.formatCurrency(item.budget, item.currency) : 'Negotiable'}</p>
+                            <div class="match-body">
+                                <h4 class="text-lg font-bold">${item.productNeeded}</h4>
+                                <p class="text-sm text-muted mb-2">📍 ${item.location}</p>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-bold text-orange-600">${item.quantity} units needed</span>
+                                    <span class="text-sm">Urgency: ${item.urgency}</span>
+                                </div>
+                                <p class="text-sm">Budget: ${item.budget > 0 ? formatter.formatCurrency(item.budget, item.currency) : 'Negotiable'}</p>
+                            </div>
+                            <div class="match-footer">
+                                <a href="${whatsappLink}" target="_blank" class="btn-primary w-full block text-center no-underline" style="text-decoration:none; display:block;">
+                                    I can supply this
+                                </a>
+                            </div>
                         </div>
-                        <div class="match-footer">
-                            <button class="btn-primary w-full" onclick="window.app.switchTab('seller')">I can supply this</button>
-                        </div>
-                    </div>
-                `).join('')}
+                    `;
+                }).join('')}
             </div>
         `;
     }

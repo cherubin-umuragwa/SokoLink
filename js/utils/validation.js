@@ -16,6 +16,7 @@ export const validation = {
         if (!data.category) errors.push("Please select a category");
         if (!data.quantity || data.quantity <= 0) errors.push("Quantity must be greater than 0");
         if (!data.location) errors.push("Location is required");
+        if (!data.phone || data.phone.length < 9) errors.push("Valid phone number is required");
         return { isValid: errors.length === 0, errors };
     },
 

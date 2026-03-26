@@ -1,15 +1,18 @@
 :root {
-    --orange: #E67E22;
+    --orange: #F27D26;
     --green: #27AE60;
     --gold: #F1C40F;
-    --earth-brown: #8B4513;
-    --light-bg: #F9F7F2;
+    --earth-brown: #3D2B1F;
+    --light-bg: #FDFCF9;
     --white: #FFFFFF;
-    --dark-text: #333333;
-    --gray: #7F8C8D;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --radius: 8px;
-    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --dark-text: #1A1A1A;
+    --muted-text: #666666;
+    --border: #E5E7EB;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --font-body: 'Poppins', sans-serif;
+    --font-title: 'Outfit', sans-serif;
 }
 
 * {
@@ -19,25 +22,27 @@
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: var(--font-body);
     background-color: var(--light-bg);
     color: var(--dark-text);
-    line-height: 1.6;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 32px;
 }
 
 header {
-    background-color: var(--white);
-    box-shadow: var(--shadow);
-    padding: 1rem 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 0;
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: 1px solid var(--border);
 }
 
 .header-content {
@@ -49,30 +54,33 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .logo h1 {
-    font-size: 1.5rem;
-    color: var(--orange);
+    font-family: var(--font-title);
+    font-size: 1.75rem;
+    color: var(--dark-text);
     font-weight: 800;
+    letter-spacing: -0.02em;
 }
 
 .logo-icon {
-    font-size: 2rem;
+    font-size: 2.2rem;
 }
 
 nav ul {
     display: flex;
     list-style: none;
-    gap: 20px;
+    gap: 32px;
 }
 
 nav a {
     text-decoration: none;
-    color: var(--dark-text);
+    color: var(--muted-text);
     font-weight: 500;
-    transition: color 0.3s;
+    font-size: 0.95rem;
+    transition: all 0.3s;
 }
 
 nav a:hover {
@@ -80,40 +88,51 @@ nav a:hover {
 }
 
 .hero {
-    background: linear-gradient(rgba(139, 69, 19, 0.7), rgba(139, 69, 19, 0.7)), url('https://picsum.photos/seed/market/1200/400') center/cover;
-    color: var(--white);
-    padding: 4rem 0;
+    padding: 6rem 0 4rem;
     text-align: center;
 }
 
 .hero h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
 }
 
 .hero p {
-    font-size: 1.2rem;
-    max-width: 700px;
+    font-size: 1.25rem;
+    color: var(--muted-text);
+    max-width: 600px;
     margin: 0 auto;
+    font-weight: 300;
 }
 
 main {
-    padding: 2rem 0;
+    padding-bottom: 6rem;
 }
 
 .view-card {
     background: var(--white);
-    padding: 2rem;
-    border-radius: var(--radius);
+    padding: 3rem;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
-    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+}
+
+h2, h3, h4 {
+    font-family: var(--font-title);
+    letter-spacing: -0.02em;
 }
 
 footer {
-    background-color: var(--earth-brown);
-    color: var(--white);
-    padding: 2rem 0;
-    margin-top: 4rem;
+    background-color: var(--white);
+    color: var(--muted-text);
+    padding: 4rem 0;
+    border-top: 1px solid var(--border);
 }
 
 .footer-content {
@@ -123,8 +142,8 @@ footer {
 }
 
 .footer-links a {
-    color: var(--white);
-    margin-left: 20px;
+    color: var(--muted-text);
+    margin-left: 32px;
     text-decoration: none;
     font-size: 0.9rem;
 }
@@ -132,29 +151,34 @@ footer {
 button {
     cursor: pointer;
     border: none;
-    border-radius: var(--radius);
+    border-radius: var(--radius-md);
     font-weight: 600;
-    transition: all 0.3s;
+    font-family: var(--font-title);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-primary {
     background-color: var(--orange);
     color: white;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 14px rgba(242, 125, 38, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(242, 125, 38, 0.4);
 }
 
 .btn-secondary {
     background-color: var(--green);
     color: white;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 14px rgba(39, 174, 96, 0.2);
 }
 
 .btn-secondary:hover {
-    background-color: #219150;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
 }
 
 .hidden {
@@ -163,24 +187,42 @@ button {
 
 input, select, textarea {
     width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: var(--radius);
-    font-family: inherit;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    background-color: #F9FAFB;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    background-color: white;
 }
 
 label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--dark-text);
+    font-family: var(--font-title);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.5s ease forwards;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+

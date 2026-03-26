@@ -1,24 +1,28 @@
 /* Mobile Styles */
 @media (max-width: 600px) {
+    .container {
+        padding: 0 24px;
+    }
+
     .hero h2 {
-        font-size: 1.8rem;
+        font-size: 2.25rem;
     }
     
     .header-content {
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
     }
     
     .footer-content {
         flex-direction: column;
         text-align: center;
-        gap: 20px;
+        gap: 32px;
     }
     
     .footer-links {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 16px;
     }
     
     .footer-links a {
@@ -26,36 +30,44 @@
     }
     
     .tabs {
+        width: 100%;
         flex-direction: column;
+    }
+
+    .tab-btn {
+        width: 100%;
     }
     
     .matches-grid {
         grid-template-columns: 1fr;
+    }
+
+    .match-card, .match-card:nth-child(3n+1), .match-card:nth-child(3n+2) {
+        grid-column: span 1;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .view-card {
+        padding: 2rem;
     }
 }
 
 /* Tablet Styles */
 @media (min-width: 601px) and (max-width: 900px) {
     .matches-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .match-card, .match-card:nth-child(3n+1), .match-card:nth-child(3n+2) {
+        grid-column: span 2;
     }
 }
 
 /* Desktop Styles */
 @media (min-width: 901px) {
-    .matches-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    /* Bento grid handles itself via nth-child rules in components.css */
 }
 
-/* Print Styles */
-@media print {
-    header, footer, .tabs, .voice-btn, .btn-primary {
-        display: none !important;
-    }
-    
-    .view-card {
-        box-shadow: none;
-        border: 1px solid #ccc;
-    }
-}

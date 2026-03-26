@@ -52,6 +52,13 @@ export const buyerView = {
                             </select>
                         </div>
                         <div>
+                            <label>WhatsApp Phone Number</label>
+                            <input type="tel" id="phone-buyer" placeholder="e.g. 254712345678" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div>
                             <label>Urgency</label>
                             <select id="urgency">
                                 <option value="Normal">Normal</option>
@@ -59,9 +66,10 @@ export const buyerView = {
                                 <option value="Low">Low (Planning ahead)</option>
                             </select>
                         </div>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button type="submit" id="search-btn" class="btn-secondary w-full">Find Best Matches</button>
+                        </div>
                     </div>
-
-                    <button type="submit" id="search-btn" class="btn-secondary w-full">Find Best Matches</button>
                 </form>
             </div>
         `;
@@ -126,6 +134,7 @@ export const buyerView = {
             budget: parseFloat(document.getElementById('budget').value) || 0,
             currency: "KES", // Default
             location: document.getElementById('location-buyer').value,
+            phone: document.getElementById('phone-buyer').value,
             urgency: document.getElementById('urgency').value
         };
 
