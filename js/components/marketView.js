@@ -91,7 +91,7 @@ export const marketView = {
                     <div class="match-card">
                         <div class="match-header">
                             <span class="relevance-badge bg-green">Seller</span>
-                            <span class="text-muted text-sm">${formatter.formatDate(item.date)}</span>
+                            <span class="text-muted text-sm">${formatter.formatDate(item.createdAt)}</span>
                         </div>
                         <div class="match-body">
                             <h4 class="text-lg font-bold">${item.productName}</h4>
@@ -103,7 +103,7 @@ export const marketView = {
                             <p class="text-sm italic">" ${formatter.truncateText(item.description || 'No description', 60)} "</p>
                         </div>
                         <div class="match-footer">
-                            <a href="${formatter.generateWhatsAppLink(item.phone, 'Hi, I saw your ' + item.productName + ' on SokoLink.')}" target="_blank" class="btn-secondary w-full block text-center no-underline" style="text-decoration:none; display:block;">
+                            <a href="${formatter.generateWhatsAppLink(item.whatsapp, 'Hi, I saw your ' + item.productName + ' on SokoLink.')}" target="_blank" class="btn-secondary w-full block text-center no-underline" style="text-decoration:none; display:block;">
                                 Contact Seller
                             </a>
                         </div>
@@ -119,17 +119,17 @@ export const marketView = {
         return `
             <div class="matches-grid">
                 ${requests.map(item => {
-                    const whatsappMsg = `Hi, I saw your request for ${item.productNeeded} on SokoLink. I can supply this to you.`;
-                    const whatsappLink = formatter.generateWhatsAppLink(item.phone || '254700000000', whatsappMsg);
+                    const whatsappMsg = `Hi, I saw your request for ${item.productName} on SokoLink. I can supply this to you.`;
+                    const whatsappLink = formatter.generateWhatsAppLink(item.whatsapp || '254700000000', whatsappMsg);
                     
                     return `
                         <div class="match-card" style="border-top-color: var(--orange);">
                             <div class="match-header">
                                 <span class="relevance-badge" style="background-color: var(--orange); color: white;">Buyer</span>
-                                <span class="text-muted text-sm">${formatter.formatDate(item.date)}</span>
+                                <span class="text-muted text-sm">${formatter.formatDate(item.createdAt)}</span>
                             </div>
                             <div class="match-body">
-                                <h4 class="text-lg font-bold">${item.productNeeded}</h4>
+                                <h4 class="text-lg font-bold">${item.productName}</h4>
                                 <p class="text-sm text-muted mb-2">📍 ${item.location}</p>
                                 <div class="flex justify-between mb-2">
                                     <span class="font-bold text-orange-600">${item.quantity} units needed</span>

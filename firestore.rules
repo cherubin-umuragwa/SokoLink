@@ -22,10 +22,13 @@ service cloud.firestore {
     //   - sellerName: string (required) - Name of the seller
     //   - productName: string (required) - Name of the product
     //   - category: string (required) - Category of the product
-    //   - quantity: string (required) - Available quantity
-    //   - price: string (required) - Price per unit
+    //   - quantity: number (required) - Available quantity
+    //   - unit: string (required) - Unit of measurement
+    //   - price: number (required) - Price per unit
+    //   - currency: string (required) - Currency code
     //   - location: string (required) - Location of the seller
     //   - whatsapp: string (required) - WhatsApp contact number
+    //   - description: string (optional) - Optional description
     //   - createdAt: string (required, ISO 8601) - Creation timestamp
     //
     // Collection: requests
@@ -35,9 +38,12 @@ service cloud.firestore {
     //   - buyerName: string (required) - Name of the buyer
     //   - productName: string (required) - Name of the product requested
     //   - category: string (required) - Category of the product
-    //   - quantity: string (required) - Quantity needed
+    //   - quantity: number (required) - Quantity needed
+    //   - budget: number (optional) - Max budget
+    //   - currency: string (optional) - Currency code
     //   - location: string (required) - Location of the buyer
     //   - whatsapp: string (required) - WhatsApp contact number
+    //   - urgency: string (optional) - Urgency level
     //   - createdAt: string (required, ISO 8601) - Creation timestamp
     //
     // ===============================================================
@@ -91,29 +97,35 @@ service cloud.firestore {
     }
 
     function isValidListing(data) {
-      return hasRequiredFields(['sellerId', 'sellerName', 'productName', 'category', 'quantity', 'price', 'location', 'whatsapp', 'createdAt']) &&
-             hasOnlyAllowedFields(['sellerId', 'sellerName', 'productName', 'category', 'quantity', 'price', 'location', 'whatsapp', 'createdAt']) &&
+      return hasRequiredFields(['sellerId', 'sellerName', 'productName', 'category', 'quantity', 'unit', 'price', 'currency', 'location', 'whatsapp', 'createdAt']) &&
+             hasOnlyAllowedFields(['sellerId', 'sellerName', 'productName', 'category', 'quantity', 'unit', 'price', 'currency', 'location', 'whatsapp', 'description', 'createdAt']) &&
              data.sellerId is string && data.sellerId == request.auth.uid &&
              data.sellerName is string && data.sellerName.size() > 0 &&
              data.productName is string && data.productName.size() > 0 &&
              data.category is string &&
-             data.quantity is string &&
-             data.price is string &&
+             data.quantity is number &&
+             data.unit is string &&
+             data.price is number &&
+             data.currency is string &&
              data.location is string &&
              data.whatsapp is string && data.whatsapp.size() >= 10 &&
+             (!('description' in data) || data.description is string) &&
              isValidDateString(data.createdAt);
     }
 
     function isValidRequest(data) {
       return hasRequiredFields(['buyerId', 'buyerName', 'productName', 'category', 'quantity', 'location', 'whatsapp', 'createdAt']) &&
-             hasOnlyAllowedFields(['buyerId', 'buyerName', 'productName', 'category', 'quantity', 'location', 'whatsapp', 'createdAt']) &&
+             hasOnlyAllowedFields(['buyerId', 'buyerName', 'productName', 'category', 'quantity', 'budget', 'currency', 'location', 'whatsapp', 'urgency', 'createdAt']) &&
              data.buyerId is string && data.buyerId == request.auth.uid &&
              data.buyerName is string && data.buyerName.size() > 0 &&
              data.productName is string && data.productName.size() > 0 &&
              data.category is string &&
-             data.quantity is string &&
+             data.quantity is number &&
+             (!('budget' in data) || data.budget is number) &&
+             (!('currency' in data) || data.currency is string) &&
              data.location is string &&
              data.whatsapp is string && data.whatsapp.size() >= 10 &&
+             (!('urgency' in data) || data.urgency is string) &&
              isValidDateString(data.createdAt);
     }
 

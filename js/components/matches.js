@@ -21,13 +21,13 @@ export const matchesView = {
     createMatchCard(match) {
         const { seller, relevanceScore, matchReason, suggestedPrice } = match;
         const whatsappMsg = `Hi ${seller.productName} seller, I saw your listing on SokoLink and I'm interested in buying.`;
-        const whatsappLink = formatter.generateWhatsAppLink(seller.phone, whatsappMsg);
+        const whatsappLink = formatter.generateWhatsAppLink(seller.whatsapp, whatsappMsg);
 
         return `
             <div class="match-card animate-fade-in">
                 <div class="match-header">
                     <span class="relevance-badge">${relevanceScore}% Match</span>
-                    <span class="text-muted text-sm">${formatter.formatDate(seller.date)}</span>
+                    <span class="text-muted text-sm">${formatter.formatDate(seller.createdAt)}</span>
                 </div>
                 <div class="match-body">
                     <h4 class="text-lg font-bold">${seller.productName}</h4>

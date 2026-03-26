@@ -63,7 +63,7 @@ export const sellerView = {
                     </select>
 
                     <label>WhatsApp Phone Number</label>
-                    <input type="tel" id="phone" placeholder="e.g. 254712345678" required>
+                    <input type="tel" id="whatsapp" placeholder="e.g. 254712345678" required>
 
                     <label>Description (Optional)</label>
                     <textarea id="description" rows="3" placeholder="Describe quality, harvest date, etc."></textarea>
@@ -138,7 +138,7 @@ export const sellerView = {
             price: parseFloat(document.getElementById('price').value),
             currency: document.getElementById('currency').value,
             location: document.getElementById('location').value,
-            phone: document.getElementById('phone').value,
+            whatsapp: document.getElementById('whatsapp').value,
             description: document.getElementById('description').value
         };
 

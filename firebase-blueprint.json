@@ -10,13 +10,16 @@
         "sellerName": { "type": "string", "description": "Name of the seller." },
         "productName": { "type": "string", "description": "Name of the product." },
         "category": { "type": "string", "description": "Category of the product." },
-        "quantity": { "type": "string", "description": "Available quantity." },
-        "price": { "type": "string", "description": "Price per unit." },
+        "quantity": { "type": "number", "description": "Available quantity." },
+        "unit": { "type": "string", "description": "Unit of measurement." },
+        "price": { "type": "number", "description": "Price per unit." },
+        "currency": { "type": "string", "description": "Currency code." },
         "location": { "type": "string", "description": "Location of the seller." },
         "whatsapp": { "type": "string", "description": "WhatsApp contact number." },
+        "description": { "type": "string", "description": "Optional description." },
         "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of creation." }
       },
-      "required": ["sellerId", "productName", "category", "quantity", "price", "location", "whatsapp", "createdAt"]
+      "required": ["sellerId", "productName", "category", "quantity", "unit", "price", "currency", "location", "whatsapp", "createdAt"]
     },
     "Request": {
       "title": "Request",
@@ -28,9 +31,12 @@
         "buyerName": { "type": "string", "description": "Name of the buyer." },
         "productName": { "type": "string", "description": "Name of the product requested." },
         "category": { "type": "string", "description": "Category of the product." },
-        "quantity": { "type": "string", "description": "Quantity needed." },
+        "quantity": { "type": "number", "description": "Quantity needed." },
+        "budget": { "type": "number", "description": "Max budget." },
+        "currency": { "type": "string", "description": "Currency code." },
         "location": { "type": "string", "description": "Location of the buyer." },
         "whatsapp": { "type": "string", "description": "WhatsApp contact number." },
+        "urgency": { "type": "string", "description": "Urgency level." },
         "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of creation." }
       },
       "required": ["buyerId", "productName", "category", "quantity", "location", "whatsapp", "createdAt"]

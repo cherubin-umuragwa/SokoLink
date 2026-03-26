@@ -21,7 +21,7 @@ export const buyerView = {
                     <div class="form-grid">
                         <div>
                             <label>Product Needed</label>
-                            <input type="text" id="productNeeded" placeholder="e.g. White Maize" required>
+                            <input type="text" id="productName" placeholder="e.g. White Maize" required>
                         </div>
                         <div>
                             <label>Category</label>
@@ -53,7 +53,7 @@ export const buyerView = {
                         </div>
                         <div>
                             <label>WhatsApp Phone Number</label>
-                            <input type="tel" id="phone-buyer" placeholder="e.g. 254712345678" required>
+                            <input type="tel" id="whatsapp-buyer" placeholder="e.g. 254712345678" required>
                         </div>
                     </div>
 
@@ -113,9 +113,9 @@ export const buyerView = {
 
     processVoiceTranscript(text) {
         const lowerText = text.toLowerCase();
-        if (lowerText.includes('onion')) document.getElementById('productNeeded').value = "Onions";
-        if (lowerText.includes('tomato')) document.getElementById('productNeeded').value = "Tomatoes";
-        if (lowerText.includes('maize')) document.getElementById('productNeeded').value = "Maize";
+        if (lowerText.includes('onion')) document.getElementById('productName').value = "Onions";
+        if (lowerText.includes('tomato')) document.getElementById('productName').value = "Tomatoes";
+        if (lowerText.includes('maize')) document.getElementById('productName').value = "Maize";
         
         const numbers = text.match(/\d+/g);
         if (numbers && numbers.length > 0) {
@@ -128,13 +128,13 @@ export const buyerView = {
         const originalText = searchBtn.textContent;
         
         const data = {
-            productNeeded: document.getElementById('productNeeded').value,
+            productName: document.getElementById('productName').value,
             category: document.getElementById('category-buyer').value,
             quantity: parseFloat(document.getElementById('quantity-buyer').value),
             budget: parseFloat(document.getElementById('budget').value) || 0,
             currency: "KES", // Default
             location: document.getElementById('location-buyer').value,
-            phone: document.getElementById('phone-buyer').value,
+            whatsapp: document.getElementById('whatsapp-buyer').value,
             urgency: document.getElementById('urgency').value
         };
 
@@ -148,6 +148,9 @@ export const buyerView = {
         searchBtn.innerHTML = `<div class="spinner" style="margin:0; width:20px; height:20px; display:inline-block; vertical-align:middle; margin-right:10px;"></div> Finding Matches...`;
 
         try {
+            // Save request to database for persistence
+            await storage.saveRequest(data);
+            
             const sellerListings = await storage.getListings();
             const aiMatches = await geminiApi.findMatches(sellerListings, data);
             
