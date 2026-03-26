@@ -1,0 +1,5 @@
+{
+  "name": "SokoLink - AI Marketplace Matchmaker",
+  "description": "An AI-powered marketplace matchmaker connecting informal traders with buyers in East Africa using Gemini AI.",
+  "requestFramePermissions": ["microphone"]
+}

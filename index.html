@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SokoLink - AI Marketplace Matchmaker</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span class="logo-icon">🛒</span>
+                <h1>SokoLink</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-home">Home</a></li>
+                    <li><a href="#" id="nav-about">About</a></li>
+                    <li><a href="#" id="nav-contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Connecting East Africa's Informal Economy</h2>
+                <p>Intelligent AI matchmaking for traders, farmers, and bulk buyers.</p>
+            </div>
+        </section>
+
+        <section class="app-container container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="seller">I am a Seller</button>
+                <button class="tab-btn" data-tab="buyer">I am a Buyer</button>
+                <button class="tab-btn" data-tab="market">Browse Market</button>
+            </div>
+
+            <div id="view-container" class="view-card">
+                <!-- Dynamic content will be injected here -->
+            </div>
+
+            <div id="matches-container" class="matches-section hidden">
+                <h3>AI-Powered Matches</h3>
+                <div id="matches-list" class="matches-grid">
+                    <!-- Match cards will be injected here -->
+                </div>
+            </div>
+
+            <div id="insights-container" class="insights-section hidden">
+                <h3>Market Insights</h3>
+                <div id="insights-content" class="insights-card">
+                    <!-- AI insights will be injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 SokoLink. Empowering East African Traders.</p>
+                <p>Nairobi | Dar es Salaam | Kampala</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="/js/app.js"></script>
+</body>
+</html>
