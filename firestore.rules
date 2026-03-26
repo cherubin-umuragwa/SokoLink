@@ -1,0 +1,149 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: userId (UID)
+    // Fields:
+    //   - uid: string (required) - User ID
+    //   - displayName: string (required) - Display name
+    //   - email: string (required) - Email address
+    //   - role: string (required, ['user', 'admin']) - User role
+    //   - createdAt: string (required, ISO 8601) - Creation timestamp
+    //
+    // Collection: listings
+    // Document ID: listingId
+    // Fields:
+    //   - sellerId: string (required) - UID of the seller
+    //   - sellerName: string (required) - Name of the seller
+    //   - productName: string (required) - Name of the product
+    //   - category: string (required) - Category of the product
+    //   - quantity: string (required) - Available quantity
+    //   - price: string (required) - Price per unit
+    //   - location: string (required) - Location of the seller
+    //   - whatsapp: string (required) - WhatsApp contact number
+    //   - createdAt: string (required, ISO 8601) - Creation timestamp
+    //
+    // Collection: requests
+    // Document ID: requestId
+    // Fields:
+    //   - buyerId: string (required) - UID of the buyer
+    //   - buyerName: string (required) - Name of the buyer
+    //   - productName: string (required) - Name of the product requested
+    //   - category: string (required) - Category of the product
+    //   - quantity: string (required) - Quantity needed
+    //   - location: string (required) - Location of the buyer
+    //   - whatsapp: string (required) - WhatsApp contact number
+    //   - createdAt: string (required, ISO 8601) - Creation timestamp
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "cherubinamani09@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidDateString(dateStr) {
+      return dateStr is string && dateStr.matches("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.*Z?$");
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidUser(data) {
+      return hasRequiredFields(['uid', 'displayName', 'email', 'role', 'createdAt']) &&
+             hasOnlyAllowedFields(['uid', 'displayName', 'email', 'role', 'createdAt']) &&
+             data.uid is string && data.uid == request.auth.uid &&
+             data.displayName is string && data.displayName.size() > 0 && data.displayName.size() < 100 &&
+             isValidEmail(data.email) &&
+             data.role in ['user', 'admin'] &&
+             isValidDateString(data.createdAt);
+    }
+
+    function isValidListing(data) {
+      return hasRequiredFields(['sellerId', 'sellerName', 'productName', 'category', 'quantity', 'price', 'location', 'whatsapp', 'createdAt']) &&
+             hasOnlyAllowedFields(['sellerId', 'sellerName', 'productName', 'category', 'quantity', 'price', 'location', 'whatsapp', 'createdAt']) &&
+             data.sellerId is string && data.sellerId == request.auth.uid &&
+             data.sellerName is string && data.sellerName.size() > 0 &&
+             data.productName is string && data.productName.size() > 0 &&
+             data.category is string &&
+             data.quantity is string &&
+             data.price is string &&
+             data.location is string &&
+             data.whatsapp is string && data.whatsapp.size() >= 10 &&
+             isValidDateString(data.createdAt);
+    }
+
+    function isValidRequest(data) {
+      return hasRequiredFields(['buyerId', 'buyerName', 'productName', 'category', 'quantity', 'location', 'whatsapp', 'createdAt']) &&
+             hasOnlyAllowedFields(['buyerId', 'buyerName', 'productName', 'category', 'quantity', 'location', 'whatsapp', 'createdAt']) &&
+             data.buyerId is string && data.buyerId == request.auth.uid &&
+             data.buyerName is string && data.buyerName.size() > 0 &&
+             data.productName is string && data.productName.size() > 0 &&
+             data.category is string &&
+             data.quantity is string &&
+             data.location is string &&
+             data.whatsapp is string && data.whatsapp.size() >= 10 &&
+             isValidDateString(data.createdAt);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && isValidUser(request.resource.data) && (request.resource.data.role == 'user' || isAdmin());
+      allow update: if isAuthenticated() && isValidUser(request.resource.data) && ((isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin());
+    }
+
+    match /listings/{listingId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidListing(request.resource.data);
+      allow update: if isAuthenticated() && isValidListing(request.resource.data) && (isOwner(resource.data.sellerId) || isAdmin());
+      allow delete: if isAuthenticated() && (isOwner(resource.data.sellerId) || isAdmin());
+    }
+
+    match /requests/{requestId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidRequest(request.resource.data);
+      allow update: if isAuthenticated() && isValidRequest(request.resource.data) && (isOwner(resource.data.buyerId) || isAdmin());
+      allow delete: if isAuthenticated() && (isOwner(resource.data.buyerId) || isAdmin());
+    }
+
+    // Default deny
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -148,7 +148,7 @@ export const buyerView = {
         searchBtn.innerHTML = `<div class="spinner" style="margin:0; width:20px; height:20px; display:inline-block; vertical-align:middle; margin-right:10px;"></div> Finding Matches...`;
 
         try {
-            const sellerListings = storage.getListings();
+            const sellerListings = await storage.getListings();
             const aiMatches = await geminiApi.findMatches(sellerListings, data);
             
             // Enrich AI matches with full seller data

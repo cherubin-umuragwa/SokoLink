@@ -129,7 +129,7 @@ export const sellerView = {
         document.getElementById('description').value = text;
     },
 
-    handleSubmit() {
+    async handleSubmit() {
         const data = {
             productName: document.getElementById('productName').value,
             category: document.getElementById('category').value,
@@ -148,8 +148,12 @@ export const sellerView = {
             return;
         }
 
-        storage.saveListing(data);
-        window.app.showToast("Listing posted successfully!");
-        document.getElementById('seller-form').reset();
+        try {
+            await storage.saveListing(data);
+            window.app.showToast("Listing posted successfully!");
+            document.getElementById('seller-form').reset();
+        } catch (error) {
+            window.app.showToast("Failed to post listing. Please try again.");
+        }
     }
 };

@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "Listing": {
+      "title": "Listing",
+      "description": "A seller's product listing in the marketplace.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique ID of the listing." },
+        "sellerId": { "type": "string", "description": "UID of the seller." },
+        "sellerName": { "type": "string", "description": "Name of the seller." },
+        "productName": { "type": "string", "description": "Name of the product." },
+        "category": { "type": "string", "description": "Category of the product." },
+        "quantity": { "type": "string", "description": "Available quantity." },
+        "price": { "type": "string", "description": "Price per unit." },
+        "location": { "type": "string", "description": "Location of the seller." },
+        "whatsapp": { "type": "string", "description": "WhatsApp contact number." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of creation." }
+      },
+      "required": ["sellerId", "productName", "category", "quantity", "price", "location", "whatsapp", "createdAt"]
+    },
+    "Request": {
+      "title": "Request",
+      "description": "A buyer's request for a product.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique ID of the request." },
+        "buyerId": { "type": "string", "description": "UID of the buyer." },
+        "buyerName": { "type": "string", "description": "Name of the buyer." },
+        "productName": { "type": "string", "description": "Name of the product requested." },
+        "category": { "type": "string", "description": "Category of the product." },
+        "quantity": { "type": "string", "description": "Quantity needed." },
+        "location": { "type": "string", "description": "Location of the buyer." },
+        "whatsapp": { "type": "string", "description": "WhatsApp contact number." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of creation." }
+      },
+      "required": ["buyerId", "productName", "category", "quantity", "location", "whatsapp", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User ID." },
+        "displayName": { "type": "string", "description": "Display name." },
+        "email": { "type": "string", "description": "Email address." },
+        "role": { "type": "string", "enum": ["user", "admin"], "description": "User role." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of account creation." }
+      },
+      "required": ["uid", "displayName", "email", "role", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/listings/{listingId}": {
+      "schema": "Listing",
+      "description": "Collection of all seller listings."
+    },
+    "/requests/{requestId}": {
+      "schema": "Request",
+      "description": "Collection of all buyer requests."
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile documents."
+    }
+  }
+}

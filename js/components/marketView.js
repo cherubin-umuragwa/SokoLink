@@ -2,45 +2,84 @@ import { storage } from '../utils/storage.js';
 import { formatter } from '../utils/formatter.js';
 
 export const marketView = {
-    render(container) {
-        const listings = storage.getListings();
-        const requests = storage.getRequests();
-
+    async render(container) {
         container.innerHTML = `
             <div class="animate-fade-in">
                 <h2>Market Overview</h2>
                 <p class="mb-2">See what's currently available and what buyers are looking for.</p>
-
-                <div class="market-toggle mb-2">
-                    <button id="show-listings" class="btn-toggle active">Available Products (${listings.length})</button>
-                    <button id="show-requests" class="btn-toggle">Buyer Requests (${requests.length})</button>
+                <div id="market-loading" class="text-center py-10">
+                    <div class="spinner"></div>
+                    <p>Loading marketplace data...</p>
                 </div>
-
-                <div id="market-content">
-                    ${this.renderListings(listings)}
+                <div id="market-container" class="hidden">
+                    <div class="market-toggle mb-2">
+                        <button id="show-listings" class="btn-toggle active">Available Products</button>
+                        <button id="show-requests" class="btn-toggle">Buyer Requests</button>
+                    </div>
+                    <div id="market-content"></div>
                 </div>
             </div>
         `;
 
-        this.setupEventListeners(listings, requests);
+        const listings = await storage.getListings();
+        const requests = await storage.getRequests();
+        
+        document.getElementById('market-loading').classList.add('hidden');
+        document.getElementById('market-container').classList.remove('hidden');
+        
+        this.currentView = 'listings';
+        this.listings = listings;
+        this.requests = requests;
+        
+        this.updateContent();
+        this.setupEventListeners();
+        this.setupRealtimeListeners();
     },
 
-    setupEventListeners(listings, requests) {
+    setupEventListeners() {
         const listingsBtn = document.getElementById('show-listings');
         const requestsBtn = document.getElementById('show-requests');
-        const content = document.getElementById('market-content');
 
         listingsBtn.addEventListener('click', () => {
+            this.currentView = 'listings';
             listingsBtn.classList.add('active');
             requestsBtn.classList.remove('active');
-            content.innerHTML = this.renderListings(listings);
+            this.updateContent();
         });
 
         requestsBtn.addEventListener('click', () => {
+            this.currentView = 'requests';
             requestsBtn.classList.add('active');
             listingsBtn.classList.remove('active');
-            content.innerHTML = this.renderRequests(requests);
+            this.updateContent();
         });
+    },
+
+    setupRealtimeListeners() {
+        // Unsubscribe from previous listeners if any
+        if (this.unsubscribeListings) this.unsubscribeListings();
+        if (this.unsubscribeRequests) this.unsubscribeRequests();
+
+        this.unsubscribeListings = storage.onListingsUpdate((listings) => {
+            this.listings = listings;
+            document.getElementById('show-listings').textContent = `Available Products (${listings.length})`;
+            if (this.currentView === 'listings') this.updateContent();
+        });
+
+        this.unsubscribeRequests = storage.onRequestsUpdate((requests) => {
+            this.requests = requests;
+            document.getElementById('show-requests').textContent = `Buyer Requests (${requests.length})`;
+            if (this.currentView === 'requests') this.updateContent();
+        });
+    },
+
+    updateContent() {
+        const content = document.getElementById('market-content');
+        if (this.currentView === 'listings') {
+            content.innerHTML = this.renderListings(this.listings);
+        } else {
+            content.innerHTML = this.renderRequests(this.requests);
+        }
     },
 
     renderListings(listings) {
